@@ -28,4 +28,8 @@ export class UserService {
     // , httpOptions
   }
 
+  updateUser(id: number, user: User): Observable<User> {
+    return this.http.put<User>(this.baseUrl + 'users/' + id, user);
+  }
+
 }
