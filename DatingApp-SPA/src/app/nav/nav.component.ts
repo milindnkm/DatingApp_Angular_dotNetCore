@@ -6,36 +6,47 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent implements OnInit {
   model: any = {};
+  photoUrl: string;
 
-  constructor(public authService: AuthService, 
-    private alertify: AlertifyService, 
-    private router: Router) { }
+  constructor(
+    public authService: AuthService,
+    private alertify: AlertifyService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    this.authService.currntPhotoUrl.subscribe(
+      (photoUrl) => (this.photoUrl = photoUrl)
+    );
   }
 
-  login(){
+  login() {
     this.authService.login(this.model).subscribe(
-      next => {
+      (next) => {
         this.alertify.success('Loged in successfully');
-
-      }, error => {
+      },
+      (error) => {
         this.alertify.error(error);
-      },  () => { 
+      },
+      () => {
         this.router.navigate(['/members']);
-      });
+      }
+    );
   }
 
-  logedIn(){
+  logedIn() {
     return this.authService.logedIn();
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.authService.decodedToken = null;
+    this.authService.currentUser = null;
     this.alertify.message('logged out');
     this.router.navigate(['/home']);
   }
