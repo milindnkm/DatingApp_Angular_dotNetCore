@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.DTOS;
+using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace DatingApp.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))] // Action filter to log users login date, this filter executes next .. i.e. when any action completes.
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -31,7 +33,7 @@ namespace DatingApp.API.Controllers
             var userToReturn = _mapper.Map<IEnumerable<UserForListDto>>(user);
             return Ok(userToReturn);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name ="GetUser")]
         public async Task<IActionResult> GetUsers(int id)
         {
             var user = await _repo.GetUser(id);
