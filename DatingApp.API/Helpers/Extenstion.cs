@@ -29,7 +29,14 @@ namespace DatingApp.API.Helpers
                 age--;
             return age;
         }
-
+        /// <summary>
+        /// Extention method to add Pagination details to Response header.
+        /// </summary>
+        /// <param name="response">HttpReponse object</param>
+        /// <param name="currentPage">Current Page number</param>
+        /// <param name="itemsPerPage">Records per page</param>
+        /// <param name="totalItems">Total Records</param>
+        /// <param name="totalPages">Total pages</param>
         public static void AddPagination(this HttpResponse response, 
             int currentPage, int itemsPerPage, int totalItems, int totalPages )
         {
